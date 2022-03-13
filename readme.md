@@ -147,3 +147,96 @@ Belajar kubernetes dari programmer zaman now
   kubectl get pods -l environment
   kubectl get pods -l 'environment in (qa, production)'
   ```
+
+## Annotations
+
+- untuk apa ?
+  - mirip label tapi tidak dapat difilter
+  - untuk menambahkan informasi tambahan | deskripsi | string json
+  - bisa menampung sampai 256 kb
+- command
+
+  ```bash
+  # running pod
+  kubectl create -f examples/nginx-with-annotation.yml
+
+  # check details
+  kubectl describe pod nginx-with-annotation
+  #output
+  Name:         nginx-with-annotation
+  Namespace:    default
+  Priority:     0
+  Node:         minikube/172.17.0.2
+  Start Time:   Sun, 06 Mar 2022 09:56:08 +0700
+  Labels:       environment=development
+                team=product
+                version=1.1.1
+  Annotations:  apapun: apapun itu ........................
+                description: annotasi deskripsi dari sebuah value yang didefinisikan, apapun itu bisa dimmasukan kesini
+  ...
+
+  # menambahkan annotation ke dalam pod
+  kubectl annotate pod namepod key=value
+  kubectl annotate pod namepod key=value --overwrite
+  ```
+
+## Nammespace [Grouping]
+
+- pod dgn nama yg sama boleh berjalan di namespace yg berbeda
+- pod bukanlah cara untuk mengisolasi resources
+- walaupun berbeda namespace, pod akan tetap bisa saling berkomunikasi dengan pods yg lain.
+- command
+
+  ```bash
+  # create namespace
+  kubectl create -f examples/finance-namespace.yml
+
+  # crate pods with name space
+  kubectl create -f examples/nginx.yml --namespace finance
+
+  # get pods with nammespace
+  kubectl get pod --namespace finance
+
+  # cara mmenghapus namespace => hati2 saat naespace dihapus resources di dalammnya akan terhapus [pod2 akan dterhapus]
+  kubectl delete namespace nama-namespace
+  ```
+
+## Mengahapus POD
+
+- command
+
+  ```bash
+  kubectl delete pod nama-pod
+  kubectl delete pod nama-pod1 nama-pod2 nama-pod3
+
+  # mengahpus pod mmenggunakan label
+  kubectl delete pod -l key=value
+
+  # mengahapus semua pod di Namespace
+  kubectl delete pod --all --namespace nama-namespace
+  ```
+
+## Probe
+
+- pengecekan di k8s
+- next materi
+  - replication controller dan replica set
+- harus mmengerti terlebih dahulu tentang liveness, readiness, dan startup probe di k8s
+- Liveness, Readiness, Startup
+  - pengecekan dilakukan oleh kubelet
+  - liveness
+    - pengecekan secara periodic kapan perlu mme-restart pod
+  - readiness
+    - pengecekan secara periodic, jika pod tidak sehat maka trafic ke dalam pod akan dihentikan sampai kebali sehat
+  - startup
+    - pengecekan setatus kesehatan diawal untuk memastikan aplikasi kita siap untuk berjalan
+- mekanisme pengecekan Probe
+  - HTTP Get (cocok untuk aplikasi web)
+  - TCP Socket
+  - Commmand Exec
+- konfigurasi pprobe
+  - initialDelaySeconds jgn sampai 0 second, aplikasi butuh startup
+  - periodSeconds, seberapa sering pengecekan dilakukan, default 10
+  - timeoutSeconds, waktu pengecekan ketika pengecekan gagal, default 1
+  - successThreshold, minimum dianggap sukses setelah berstatus failure, default 1
+  - failureThreshold, minimum dianggap gagal, default 3

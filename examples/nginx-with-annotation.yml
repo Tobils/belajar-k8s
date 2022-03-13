@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-with-annotation
+  labels:
+    team: product
+    version: 1.1.1
+    environment: development
+  annotations:
+    description: annotasi deskripsi dari sebuah value yang didefinisikan, apapun itu bisa dimmasukan kesini
+    apapun: apapun itu ........................
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
