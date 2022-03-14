@@ -240,3 +240,14 @@ Belajar kubernetes dari programmer zaman now
   - timeoutSeconds, waktu pengecekan ketika pengecekan gagal, default 1
   - successThreshold, minimum dianggap sukses setelah berstatus failure, default 1
   - failureThreshold, minimum dianggap gagal, default 3
+
+## Replication Controller
+
+- memastikan pod selalu berjalan
+- jika tiba2 pod mati atau hilang misal ketika ada node yg mati, maka replication controller secara otomatis akan menjalankan pod yg bati atau yg hilang tsb.
+- biasanya ditugaskan untuk memanage lebih dari 1 pod
+- memastikan jumlah pod yg berjalan sesuai dengan yg ditugaskan, jika kurang maka akan menambah pod yang baru dan jika lebih maka akan mengurangi pod yg ada.
+- isi replication controller
+  - Label selector sebagai penanda pod
+  - replica count, jumlah pod yang harus berjalan
+  - pod template, template yang digunakan untuk menjalankan pod
