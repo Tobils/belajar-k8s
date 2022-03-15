@@ -251,3 +251,64 @@ Belajar kubernetes dari programmer zaman now
   - Label selector sebagai penanda pod
   - replica count, jumlah pod yang harus berjalan
   - pod template, template yang digunakan untuk menjalankan pod
+- command
+
+  ```bash
+  kubectl create -f examples/nginx-rc.yml
+
+  # melihat replication controller
+  kubectl get replicationcontrollers
+  kubectl get replicationcontrollers
+  kubectl get rc
+
+  # menghapus rc by default akan menghapus pod
+  kubectl delete rc rcname
+  # tanpa menghapus pod
+  kubectl delete rc rcname --cascade=false
+  ```
+
+## Replica Set
+
+- awal mula replica controller digunakan untuk menjaga jumlah pod
+- sekarang dikenalkan yang baru bernama replica set
+- replica set merupakan egenrasi baru dari replica controller dan digunakan sebagai pengganti replica controller
+- penggunaan replication controller sekrang ini sudah tidak direkomendasikan
+- replica set vs replica controller
+  - replica set memiliki kemampuan hampir sama dengan replica controller
+  - replica set memiliki label selector yg lebih expressive
+  - replica controller hanya memiliki fitur selector secara match [key=value]
+- match expression => selector menggunakan expresi
+  - In, value label harus ada di value in
+  - NotIn, value label tidak boleh ada di value in
+  - Exists, label harus ada
+  - NotExists, label tidak boleh ada
+
+## Upgrade minikube
+
+- command
+
+  ```bash
+  minikube update-check
+  CurrentVersion: v1.20.0
+  LatestVersion: v1.25.2
+
+  # download mminikube lnatest release : https://github.com/kubernetes/minikube/releases
+  sudo cp minikube-linux-amd-64 /usr/local/bin
+  sudo chmod +x minikube-linux-amd-64
+  sudo rm -rf minikube
+  sudo mv minikube-linux-amd-64 minikube
+
+  # check new upgraded
+  minikube update-check
+  CurrentVersion: v1.25.2
+  LatestVersion: v1.25.2
+
+  minikube start
+
+  # running dgn virtual box
+  minikube start --vm-driver=virtualbox
+
+  # running dgn virtual box dan config cpu
+  minikube start --vm-driver=virtualbox --cpus=2 --memory=2g --disk-size=20g
+
+  ```
